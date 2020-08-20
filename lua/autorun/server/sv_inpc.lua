@@ -10,6 +10,7 @@ local INPC_ANTLION_CHARGE_DIVISOR = INPC_ANTLION_CHARGE_DIVISOR
 local INPC_COND_SEE_ENEMY = INPC_COND_SEE_ENEMY
 local INPC_COND_FLOATING_OFF_GROUND = INPC_COND_FLOATING_OFF_GROUND
 local INPC_ENEMY_TOO_CLOSE_DISTANCE = INPC_ENEMY_TOO_CLOSE_DISTANCE
+local INPC_ENEMY_TOO_FAR_DISTANCE = INPC_ENEMY_TOO_FAR_DISTANCE
 local INPC_NEXT_FOLLOW_TIME = INPC_NEXT_FOLLOW_TIME
 local INPC_MAX_FOLLOW_DISTANCE = INPC_MAX_FOLLOW_DISTANCE
 local INPC_MAX_FOLLOW_DISTANCE_IN_BATTLE = INPC_MAX_FOLLOW_DISTANCE_IN_BATTLE
@@ -650,6 +651,11 @@ function inpcInfantryAI(npc)
 	if reloading then
 		return
 	end
+
+	local facingEnemy = npc:IsCurrentSchedule(SCHED_COMBAT_FACE)
+	if facingEnemy then
+		return
+	end
 	
 	local fallingBack = npc:IsCurrentSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 	if fallingBack then
@@ -674,18 +680,24 @@ function inpcInfantryAI(npc)
 
 			local distanceFromEnemy = npc:GetPos():Distance(enemy:GetPos())
 			local enemyTooClose = distanceFromEnemy <= INPC_ENEMY_TOO_CLOSE_DISTANCE
+			local enemyTooFar = distanceFromEnemy >= INPC_ENEMY_TOO_FAR_DISTANCE
 
 			if enemyTooClose then
 
 				npc:SetSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 				return
 		
-			else
+			elseif not enemyTooFar then
 
-				if math.random() < 0.01 then
+				if math.random() < 0.004 then
 					npc:SetSchedule(SCHED_RUN_RANDOM)
 					return
 				end
+
+			else
+
+				npc:SetSchedule(SCHED_COMBAT_FACE)
+				return
 
 			end
 
