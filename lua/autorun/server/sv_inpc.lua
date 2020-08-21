@@ -651,11 +651,6 @@ function inpcInfantryAI(npc)
 	if reloading then
 		return
 	end
-
-	local facingEnemy = npc:IsCurrentSchedule(SCHED_COMBAT_FACE)
-	if facingEnemy then
-		return
-	end
 	
 	local fallingBack = npc:IsCurrentSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 	if fallingBack then
@@ -689,16 +684,11 @@ function inpcInfantryAI(npc)
 		
 			elseif not enemyTooFar then
 
-				if math.random() < 0.004 then
+				if math.random() < 0.002 then
 					npc:SetSchedule(SCHED_RUN_RANDOM)
 					return
 				end
-
-			else
-
-				npc:SetSchedule(SCHED_COMBAT_FACE)
-				return
-
+				
 			end
 
 		else
