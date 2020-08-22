@@ -1,12 +1,3 @@
-sound.Add({
-	name = "inpcHeadshotSound",
-	channel = CHAN_AUTO,
-	volume = 1,
-	level = 75,
-	pitch = {95, 105},
-	sound = "player/headshot1.wav"
-})
-
 RunConsoleCommand("sk_antlion_swipe_damage", "10")
 RunConsoleCommand("sk_antlion_worker_spit_speed", "1200")
 RunConsoleCommand("sk_antlion_worker_burst_radius", "0")

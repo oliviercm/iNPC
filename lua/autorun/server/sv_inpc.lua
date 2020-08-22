@@ -437,36 +437,6 @@ function inpcCheckForEnemies(npc)
 
 end
 
-function inpcHeadshot(npc, hitgroup, dmg)
-
-	if not GetConVar("inpc_enabled"):GetBool() then
-		return
-	end
-	
-	if hitgroup == HITGROUP_HEAD then
-	
-		local damagePos = dmg:GetDamagePosition()
-		
-		local effect = EffectData()
-		effect:SetStart(damagePos)
-		effect:SetOrigin(damagePos)
-		effect:SetScale(1)
-		effect:SetMagnitude(1)
-		effect:SetRadius(1)
-		util.Effect("BloodImpact", effect)
-		
-		if dmg:GetDamage() >= npc:Health() then
-		
-			sound.Play("inpcHeadshotSound", damagePos)
-		
-		end
-	
-	end
-	
-end
-
-hook.Add("ScaleNPCDamage", "iNPCScaleNPCDamageHook", inpcHeadshot)
-
 function inpcDamageInvulnerable(victim, dmg)
 
 	if not GetConVar("inpc_enabled"):GetBool() or not GetConVar("inpc_damage_invulnerable"):GetBool() then
