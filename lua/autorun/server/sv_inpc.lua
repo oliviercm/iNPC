@@ -53,7 +53,7 @@ function inpcThink()
 				inpcAI(v)
 				
 			end
-			
+
 			local cl = v:GetClass()
 		
 			if v.inpcIsInfantry and GetConVar("inpc_ai_infantry"):GetBool()then
@@ -85,7 +85,7 @@ hook.Add("Tick", "iNPCTickHook", inpcThink)
 function inpcAI(npc)
 
 	if IsValid(npc) then
-		
+
 		state = npc:GetNPCState()
 		
 		local dead = state == NPC_STATE_DEAD or npc:Health() <= 0
@@ -100,7 +100,7 @@ function inpcAI(npc)
 		
 		local enemy = npc:GetEnemy()
 		if IsValid(enemy) then
-			
+
 			npc:SetLastPosition(enemy:GetPos())
 			npc:SetNPCState(NPC_STATE_COMBAT)
 			return
@@ -416,7 +416,7 @@ function inpcCheckForEnemies(npc)
 	for k, v in pairs(ents.FindByClass("npc_*")) do
 	
 		if IsValid(v) and npc:Visible(v) and v:Health() > 0 and npc:Disposition(v) == D_HT then
-		
+
 			npc:SetEnemy(v)
 			return true
 		
@@ -638,7 +638,7 @@ function inpcInfantryAI(npc)
 	if specialAttack then
 		return
 	end
-	
+
 	local weapon = npc:GetActiveWeapon()
 	if IsValid(weapon) then
 
@@ -659,13 +659,16 @@ function inpcInfantryAI(npc)
 				npc:SetSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 				return
 		
-			elseif not enemyTooFar then
+			elseif not enemyTooFar and math.random() < 0.002 then
 
-				if math.random() < 0.002 then
-					npc:SetSchedule(SCHED_RUN_RANDOM)
-					return
-				end
+				npc:SetSchedule(SCHED_RUN_RANDOM)
+				return
 				
+			else
+
+				npc:SetSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
+				return
+
 			end
 
 		else
