@@ -408,7 +408,7 @@ function inpcCheckForEnemies(npc)
 
 	for k, v in pairs(ents.FindByClass("npc_*")) do
 	
-		if IsValid(v) and v:Visible(npc) and v:Health() > 0 and npc:Disposition(v) == D_HT then
+		if IsValid(v) and npc:Visible(v) and v:Health() > 0 and npc:Disposition(v) == D_HT then
 		
 			npc:SetEnemy(v)
 			return true
@@ -421,7 +421,7 @@ function inpcCheckForEnemies(npc)
 	
 		for k, v in pairs(player.GetAll()) do
 		
-			if IsValid(v) and v:Visible(npc) and v:Health() > 0 and npc:Disposition(v) == D_HT then
+			if IsValid(v) and npc:Visible(v) and v:Health() > 0 and npc:Disposition(v) == D_HT then
 			
 				npc:SetEnemy(v)
 				return true
