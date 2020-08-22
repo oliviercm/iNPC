@@ -367,6 +367,7 @@ function inpcPlayerSpawnedNPC(ply, npc)
 
 	if GetConVar("inpc_metropolice_manhacks"):GetBool() and npc:GetClass() == "npc_metropolice" then
 		npc:SetKeyValue("manhacks", "1")
+		npc:SetBodygroup(1, 1)
 	end
 	
 	inpcSetNPCFaction(npc, ply:GetInfo("inpc_forcefaction"))
