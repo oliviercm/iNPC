@@ -98,9 +98,10 @@ function inpcAI(npc)
 			return
 		end
 		
-		if IsValid(npc:GetEnemy()) then
+		local enemy = npc:GetEnemy()
+		if IsValid(enemy) then
 			
-			inpcRefreshEnemyMemory(npc)
+			npc:SetLastPosition(enemy:GetPos())
 			npc:SetNPCState(NPC_STATE_COMBAT)
 			return
 			
@@ -420,7 +421,7 @@ function inpcCheckForEnemies(npc)
 	if not GetConVar("ai_ignoreplayers"):GetBool() then
 	
 		for k, v in pairs(player.GetAll()) do
-		
+
 			if IsValid(v) and npc:Visible(v) and v:Health() > 0 and npc:Disposition(v) == D_HT then
 			
 				npc:SetEnemy(v)
@@ -1020,16 +1021,6 @@ function inpcSetSquad(npc, faction)
 		
 	end
 	
-end
-
-function inpcRefreshEnemyMemory(npc)
-	
-	local enemy = npc:GetEnemy()
-	local enemyPos = enemy:GetPos()
-
-	npc:SetLastPosition(enemyPos)
-	npc:UpdateEnemyMemory(enemy, enemyPos)
-
 end
 
 function inpcHealthRegeneration(npc)
