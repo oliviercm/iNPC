@@ -69,6 +69,7 @@ local function populateInpcAIOptionsToolPanel(dform)
 
 	dform:Help("Enable and disable specific AI overrides.")
 	dform:CheckBox("Enable Custom Infantry AI", "inpc_ai_infantry")
+	dform:CheckBox("Enable Metropolice Manhacks", "inpc_metropolice_manhacks")
 	dform:CheckBox("Enable Custom Zombie AI", "inpc_ai_zombie")
 	dform:CheckBox("Enable Custom Fast Zombie AI", "inpc_ai_fastzombie")
 	dform:CheckBox("Enable Poison Zombies Don't Throw Headcrabs", "inpc_ai_poisonzombie_disablethrowheadcrabs")
