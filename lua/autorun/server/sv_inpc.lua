@@ -143,7 +143,8 @@ function inpcAI(npc)
 		
 		if npc:WaterLevel() == 3 then
 		
-			npc:TakeDamage(1, nil, nil)
+			local world = game.GetWorld()
+			npc:TakeDamage(1, world, world)
 		
 		end
 		
