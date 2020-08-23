@@ -84,6 +84,8 @@ function inpcThink()
 				inpcAntlionGuardAI(v)
 			elseif cl == "npc_vortigaunt" and GetConVar("inpc_ai_vortigaunt"):GetBool() then
 				inpcVortigauntAI(v)
+			elseif cl == "npc_manhack" then
+				inpcManhackAI(v)
 			end
 			
 		end
@@ -132,7 +134,7 @@ function inpcAI(npc)
 			local idleSchedule = npc:IsCurrentSchedule(SCHED_IDLE_STAND)
 			local isIdle = idleState and idleSchedule
 			
-			if GetConVar("inpc_patrol"):GetBool() and isIdle then
+			if GetConVar("inpc_patrol"):GetBool() and isIdle and not npc.inpcIsDeployedManhack then
 
 				if math.random() < 0.8 then
 					npc:SetSchedule(SCHED_PATROL_WALK)
@@ -166,7 +168,7 @@ function inpcAI(npc)
 
 end
 
-function inpcInitializeNPC(npc)
+function inpcInitializeNPC(npc, forcedFaction)
 	
 	if not npc:IsNPC() then
 		npc.inpcIgnore = true
@@ -650,29 +652,37 @@ function inpcInfantryAI(npc)
 		return
 	end
 
-	local strafing = npc:IsCurrentSchedule(SCHED_RUN_RANDOM)
+	local currentSchedule = npc:GetCurrentSchedule()
+
+	local strafing = currentSchedule == SCHED_RUN_RANDOM
 	if strafing then
 		return
 	end
 	
-	local getLineOfFire = npc:IsCurrentSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
+	local getLineOfFire = currentSchedule == SCHED_ESTABLISH_LINE_OF_FIRE
 	if getLineOfFire then
 		return
 	end
 	
 	local currentActivity = npc:GetActivity()
-	local reloading = npc:IsCurrentSchedule(SCHED_RELOAD) or npc:IsCurrentSchedule(SCHED_HIDE_AND_RELOAD) or currentActivity == ACT_RELOAD
+	local reloading = currentSchedule == SCHED_RELOAD or currentSchedule == SCHED_HIDE_AND_RELOAD or currentActivity == ACT_RELOAD
 	if reloading then
 		return
 	end
 	
-	local fallingBack = npc:IsCurrentSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
+	local fallingBack = currentSchedule == SCHED_RUN_FROM_ENEMY_FALLBACK
 	if fallingBack then
 		return
 	end
 	
-	local specialAttack = npc:IsCurrentSchedule(SCHED_RANGE_ATTACK2) or npc:IsCurrentSchedule(SCHED_MELEE_ATTACK1) or npc:IsCurrentSchedule(SCHED_MELEE_ATTACK2) or npc:IsCurrentSchedule(SCHED_SPECIAL_ATTACK1) or npc:IsCurrentSchedule(SCHED_SPECIAL_ATTACK2)
+	local specialAttack = currentSchedule == SCHED_RANGE_ATTACK2 or currentSchedule == SCHED_MELEE_ATTACK1 or currentSchedule == SCHED_MELEE_ATTACK2 or currentSchedule == SCHED_SPECIAL_ATTACK1 or currentSchedule == SCHED_SPECIAL_ATTACK2
 	if specialAttack then
+		return
+	end
+
+	local deployingManhack = npc:GetClass("npc_metropolice") and currentSchedule >= LAST_SHARED_SCHEDULE and currentActivity >= LAST_SHARED_ACTIVITY
+	if deployingManhack then
+		inpcAllyNearbyManhack(npc)
 		return
 	end
 
@@ -961,6 +971,32 @@ function inpcHunterAI(npc)
 
 end
 
+function inpcManhackAI(npc)
+
+	if npc.inpcIsDeployedManhack then
+
+		if not IsValid(npc.inpcDeployedByNPC) then
+
+			npc.inpcIsDeployedManhack = false
+			return
+
+		end
+
+		if not npc:GetEnemy() then
+
+			local currentSchedule = npc:GetCurrentSchedule()
+
+			if currentSchedule == SCHED_WAIT_FOR_SCRIPT then return end
+
+			npc:SetLastPosition(npc.inpcDeployedByNPC:GetPos() + Vector(0, 0, 192))
+			npc:SetSchedule(SCHED_FORCED_GO_RUN)
+
+		end
+	
+	end
+
+end
+
 function inpcVortigauntAI(npc)
 
 	local enemy = npc:GetEnemy()
@@ -1072,6 +1108,46 @@ function inpcSetCustomHealth(npc, cl)
 		npc:SetHealth(health)
 		npc:SetMaxHealth(health)
 		
+	end
+
+end
+
+function inpcAllyNearbyManhack(npc)
+
+	if not IsValid(npc) or not npc.inpcFaction then return end
+
+	local npcPos = npc:GetPos()
+	local manhacks = ents.FindByClass("npc_manhack")
+	for _, manhack in pairs(manhacks) do
+
+		if not manhack.inpcIsDeployedManhack and manhack:IsCurrentSchedule(SCHED_WAIT_FOR_SCRIPT) and manhack:GetPos():Distance(npcPos) < 32 then
+
+			manhack.inpcIsDeployedManhack = true
+			manhack.inpcDeployedByNPC = npc
+			manhack.inpcStopAIUntil = CurTime() + 5
+			manhack:SetTarget(npc)
+			inpcSetNPCFaction(manhack, npc.inpcFaction)
+
+			for _, playerUndoTable in pairs(undo.GetTable()) do
+				
+				for _, playerUndo in pairs(playerUndoTable) do
+
+					for _, undoEntity in pairs(playerUndo.Entities) do
+
+						if IsValid(undoEntity) and undoEntity == npc then
+
+							table.insert(playerUndo.Entities, manhack)
+
+						end
+
+					end
+
+				end
+
+			end
+
+		end
+
 	end
 
 end
