@@ -627,8 +627,6 @@ function inpcInfantryAI(npc)
 		return
 	end
 
-	debugoverlay.Text(npc:GetPos(), npc:GetPos():Distance(enemy:GetPos()), engine.TickInterval() * 2)
-
 	local strafing = npc:IsCurrentSchedule(SCHED_RUN_RANDOM)
 	if strafing then
 		return
