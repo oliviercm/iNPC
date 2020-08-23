@@ -535,7 +535,7 @@ function inpcFriendlyFire(ent, dmg)
 	local attacker = dmg:GetAttacker()
 	local victim = ent
 	
-	if IsValid(attacker) and IsValid(victim) and attacker.inpcFaction and victim.inpcFaction and attacker.inpcFaction == victim.inpcFaction and not attacker:IsPlayer() then
+	if IsValid(attacker) and IsValid(victim) and attacker.inpcFaction and victim.inpcFaction and attacker.inpcFaction == victim.inpcFaction and not attacker:IsPlayer() and ent ~= attacker then
 		dmg:SetDamage(0)
 		return true
 	end
