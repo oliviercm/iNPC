@@ -11,7 +11,7 @@ CreateConVar("inpc_custom_health", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 CreateConVar("inpc_health_regeneration", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 CreateConVar("inpc_enable_factions", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 CreateConVar("inpc_allow_adding_npcs_to_squad", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
-CreateConVar("inpc_metropolice_manhacks", 0, FCVAR_NOTIFY + FCVAR_ARCHIVE)
+CreateConVar("inpc_metropolice_manhacks", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 
 CreateConVar("inpc_ai_infantry", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 CreateConVar("inpc_ai_zombie", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
