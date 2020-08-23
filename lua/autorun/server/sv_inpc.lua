@@ -345,7 +345,7 @@ function inpcSetPlayerFaction(ply)
 	end
 
 	local forcedPlayerFaction = GetConVar("inpc_force_player_faction"):GetString()
-	
+	 
 	if forcedPlayerFaction == "default" then
 	
 		timer.Simple(0, function()
@@ -354,8 +354,15 @@ function inpcSetPlayerFaction(ply)
 			local faction = inpcPlayermodelFaction[mdl]
 			
 			ply.inpcFaction = faction or GetConVar("inpc_custom_playermodel_faction"):GetString()
-			
 			inpcSetRelations()
+
+			if ply.inpcLastFaction ~= ply.inpcFaction or ply.inpcLastPlayermodel ~= mdl then
+
+				ply.inpcLastFaction = ply.inpcFaction
+				ply.inpcLastPlayermodel = mdl
+				ply:ChatPrint("[INPC] Based on your playermodel, your faction has been set to \""..ply.inpcFaction.."\".")
+
+			end
 			
 		end)
 
@@ -363,8 +370,18 @@ function inpcSetPlayerFaction(ply)
 	
 		timer.Simple(0, function()
 		
+			local mdl = string.sub(ply:GetModel(), 15, -5)
+
 			ply.inpcFaction = forcedPlayerFaction
 			inpcSetRelations()
+
+			if ply.inpcLastFaction ~= ply.inpcFaction or ply.inpcLastPlayermodel ~= mdl then
+
+				ply.inpcLastFaction = ply.inpcFaction
+				ply.inpcLastPlayermodel = mdl
+				ply:ChatPrint("[INPC] Your faction has been forced to \""..ply.inpcFaction.."\".")
+
+			end
 			
 		end)
 	
