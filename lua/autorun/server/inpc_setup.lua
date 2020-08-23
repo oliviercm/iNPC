@@ -1,3 +1,5 @@
+util.AddNetworkString("iNPCPlayerChangedFaction")
+
 RunConsoleCommand("sk_antlion_swipe_damage", "10")
 RunConsoleCommand("sk_antlion_worker_spit_speed", "1200")
 RunConsoleCommand("sk_antlion_worker_burst_radius", "0")

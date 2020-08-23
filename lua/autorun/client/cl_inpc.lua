@@ -89,3 +89,19 @@ hook.Add("PopulateToolMenu", "iNPC Options", function()
 	spawnmenu.AddToolMenuOption("Options", "iNPC", "iNPCAIOptionsToolMenu", "AI Overrides", "", "", populateInpcAIOptionsToolPanel)
 	
 end)
+
+net.Receive("iNPCPlayerChangedFaction", function()
+	local newFaction = net.ReadString()
+	local factionForced = net.ReadBool()
+	chat.AddText(
+		Color(255, 165, 0),
+		"[iNPC] ",
+		Color(255, 255, 255),
+		factionForced and "Your faction has been forced to \"" or "Based on your playermodel, your faction has been set to \"",
+		Color(255, 165, 0),
+		newFaction,
+		Color(255, 255, 255),
+		"\"."
+	)
+	notification.AddLegacy("[iNPC] Your faction is now \""..newFaction.."\".", NOTIFY_GENERIC, 5)
+end)

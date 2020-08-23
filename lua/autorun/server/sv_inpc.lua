@@ -360,7 +360,10 @@ function inpcSetPlayerFaction(ply)
 
 				ply.inpcLastFaction = ply.inpcFaction
 				ply.inpcLastPlayermodel = mdl
-				ply:ChatPrint("[INPC] Based on your playermodel, your faction has been set to \""..ply.inpcFaction.."\".")
+				net.Start("iNPCPlayerChangedFaction")
+				net.WriteString(ply.inpcFaction)
+				net.WriteBool(false)
+				net.Send(ply)
 
 			end
 			
@@ -379,7 +382,10 @@ function inpcSetPlayerFaction(ply)
 
 				ply.inpcLastFaction = ply.inpcFaction
 				ply.inpcLastPlayermodel = mdl
-				ply:ChatPrint("[INPC] Your faction has been forced to \""..ply.inpcFaction.."\".")
+				net.Start("iNPCPlayerChangedFaction")
+				net.WriteString(ply.inpcFaction)
+				net.WriteBool(true)
+				net.Send(ply)
 
 			end
 			
