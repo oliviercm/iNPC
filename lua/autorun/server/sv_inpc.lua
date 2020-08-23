@@ -673,7 +673,7 @@ function inpcInfantryAI(npc)
 				npc:SetSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 				return
 		
-			elseif not enemyTooFar and math.random() < 0.002 then
+			elseif not enemyTooFar and math.random() < 0.005 then
 
 				npc:SetSchedule(SCHED_RUN_RANDOM)
 				return
