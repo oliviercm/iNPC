@@ -54,6 +54,18 @@ function inpcThink()
 				
 			end
 
+			if v:HasCondition(INPC_COND_TASK_FAILED) then
+
+				v.inpcStopAIUntil = CurTime() + 2
+
+			end
+
+			if v.inpcStopAIUntil and CurTime() < v.inpcStopAIUntil then
+
+				return
+
+			end
+
 			local cl = v:GetClass()
 		
 			if v.inpcIsInfantry and GetConVar("inpc_ai_infantry"):GetBool()then
@@ -101,9 +113,12 @@ function inpcAI(npc)
 		local enemy = npc:GetEnemy()
 		if IsValid(enemy) then
 
-			npc:SetLastPosition(enemy:GetPos())
-			npc:SetNPCState(NPC_STATE_COMBAT)
-			return
+			if npc.inpcLastEnemy ~= enemy then
+
+				npc.inpcLastEnemy = enemy
+				npc:UpdateEnemyMemory(enemy, enemy:GetPos())
+
+			end
 			
 		else
 		
@@ -132,8 +147,7 @@ function inpcAI(npc)
 			local alertState = state == NPC_STATE_ALERT
 			
 			if alertState then
-			
-				npc:SetSchedule(SCHED_FORCED_GO_RUN)
+
 				npc:SetNPCState(NPC_STATE_IDLE)
 				return
 			
@@ -662,11 +676,6 @@ function inpcInfantryAI(npc)
 			elseif not enemyTooFar and math.random() < 0.002 then
 
 				npc:SetSchedule(SCHED_RUN_RANDOM)
-				return
-				
-			else
-
-				npc:SetSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
 				return
 
 			end
