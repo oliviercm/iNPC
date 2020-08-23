@@ -627,6 +627,8 @@ function inpcInfantryAI(npc)
 		return
 	end
 
+	debugoverlay.Text(npc:GetPos(), npc:GetPos():Distance(enemy:GetPos()), engine.TickInterval() * 2)
+
 	local strafing = npc:IsCurrentSchedule(SCHED_RUN_RANDOM)
 	if strafing then
 		return
@@ -665,17 +667,23 @@ function inpcInfantryAI(npc)
 		if npc:Visible(enemy) then
 
 			local distanceFromEnemy = npc:GetPos():Distance(enemy:GetPos())
-			local enemyTooClose = distanceFromEnemy <= INPC_ENEMY_TOO_CLOSE_DISTANCE
-			local enemyTooFar = distanceFromEnemy >= INPC_ENEMY_TOO_FAR_DISTANCE
-
-			if enemyTooClose then
+			if distanceFromEnemy < INPC_ENEMY_TOO_CLOSE_DISTANCE then
 
 				npc:SetSchedule(SCHED_RUN_FROM_ENEMY_FALLBACK)
 				return
 		
-			elseif not enemyTooFar and math.random() < 0.005 then
+			elseif distanceFromEnemy < INPC_ENEMY_TOO_FAR_DISTANCE then
 
-				npc:SetSchedule(SCHED_RUN_RANDOM)
+				if math.random() < 0.004 then
+
+					npc:SetSchedule(SCHED_RUN_RANDOM)
+					return
+
+				end
+
+			else
+
+				npc:SetSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
 				return
 
 			end
