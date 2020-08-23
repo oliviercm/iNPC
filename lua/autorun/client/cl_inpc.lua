@@ -103,5 +103,5 @@ net.Receive("iNPCPlayerChangedFaction", function()
 		Color(255, 255, 255),
 		"\"."
 	)
-	notification.AddLegacy("[iNPC] Your faction is now \""..newFaction.."\".", NOTIFY_GENERIC, 5)
+	notification.AddLegacy("[iNPC] Your faction is now \""..newFaction.."\".", NOTIFY_GENERIC, 10)
 end)
