@@ -51,19 +51,19 @@ function inpcThink()
 			if v.inpcUseAI then
 				
 				inpcAI(v)
+
+				if v:HasCondition(INPC_COND_TASK_FAILED) then
+
+					v.inpcStopAIUntil = CurTime() + 2
+	
+				end
+
+				if v.inpcStopAIUntil and CurTime() < v.inpcStopAIUntil then
+
+					return
+	
+				end
 				
-			end
-
-			if v:HasCondition(INPC_COND_TASK_FAILED) then
-
-				v.inpcStopAIUntil = CurTime() + 2
-
-			end
-
-			if v.inpcStopAIUntil and CurTime() < v.inpcStopAIUntil then
-
-				return
-
 			end
 
 			local cl = v:GetClass()
