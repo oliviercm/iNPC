@@ -350,7 +350,7 @@ end
 
 function inpcSetPlayerFaction(ply)
 
-	if not GetConVar("inpc_enabled"):GetBool() or not GetConVar("inpc_enable_factions"):GetBool()  then
+	if not GetConVar("inpc_enabled"):GetBool() or not GetConVar("inpc_enable_factions"):GetBool() then
 		return
 	end
 
@@ -361,9 +361,8 @@ function inpcSetPlayerFaction(ply)
 		timer.Simple(0, function()
 		
 			local mdl = string.sub(ply:GetModel(), 15, -5)
-			local faction = inpcPlayermodelFaction[mdl]
 			
-			ply.inpcFaction = faction or GetConVar("inpc_custom_playermodel_faction"):GetString()
+			ply.inpcFaction = inpcPlayermodelFaction[mdl] or GetConVar("inpc_custom_playermodel_faction"):GetString()
 			inpcSetRelations()
 
 			if ply.inpcLastFaction ~= ply.inpcFaction or ply.inpcLastPlayermodel ~= mdl then
@@ -384,7 +383,6 @@ function inpcSetPlayerFaction(ply)
 		timer.Simple(0, function()
 		
 			local mdl = string.sub(ply:GetModel(), 15, -5)
-
 			ply.inpcFaction = forcedPlayerFaction
 			inpcSetRelations()
 
@@ -406,6 +404,73 @@ function inpcSetPlayerFaction(ply)
 end
 
 hook.Add("PlayerSpawn", "iNPCPlayerSpawnHook", inpcSetPlayerFaction)
+
+function inpcSetAllPlayerFactions()
+
+	if not GetConVar("inpc_enabled"):GetBool() or not GetConVar("inpc_enable_factions"):GetBool() then
+		return
+	end
+
+	local forcedPlayerFaction = GetConVar("inpc_force_player_faction"):GetString()
+	 
+	if forcedPlayerFaction == "default" then
+
+		for _, ply in ipairs(player.GetAll()) do
+
+			timer.Simple(0, function()
+		
+				local mdl = string.sub(ply:GetModel(), 15, -5)
+				ply.inpcFaction = inpcPlayermodelFaction[mdl] or GetConVar("inpc_custom_playermodel_faction"):GetString()
+				inpcSetRelations()
+	
+				if ply.inpcLastFaction ~= ply.inpcFaction or ply.inpcLastPlayermodel ~= mdl then
+	
+					ply.inpcLastFaction = ply.inpcFaction
+					ply.inpcLastPlayermodel = mdl
+					net.Start("iNPCPlayerChangedFaction")
+					net.WriteString(ply.inpcFaction)
+					net.WriteBool(false)
+					net.Send(ply)
+	
+				end
+				
+			end)
+
+		end
+
+	else
+
+		for _, ply in ipairs(player.GetAll()) do
+
+			timer.Simple(0, function()
+		
+				local mdl = string.sub(ply:GetModel(), 15, -5)
+	
+				ply.inpcFaction = forcedPlayerFaction
+				inpcSetRelations()
+	
+				if ply.inpcLastFaction ~= ply.inpcFaction or ply.inpcLastPlayermodel ~= mdl then
+	
+					ply.inpcLastFaction = ply.inpcFaction
+					ply.inpcLastPlayermodel = mdl
+					net.Start("iNPCPlayerChangedFaction")
+					net.WriteString(ply.inpcFaction)
+					net.WriteBool(true)
+					net.Send(ply)
+	
+				end
+				
+			end)
+
+		end
+	
+	end
+
+end
+
+cvars.AddChangeCallback("inpc_enable_factions", inpcSetAllPlayerFactions)
+cvars.AddChangeCallback("inpc_custom_playermodel_faction", inpcSetAllPlayerFactions)
+cvars.AddChangeCallback("inpc_force_player_faction", inpcSetAllPlayerFactions)
 
 function inpcPlayerSpawnedNPC(ply, npc)
 	
