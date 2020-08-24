@@ -788,7 +788,6 @@ function inpcAntlionGuardAI(npc)
 	end
 
 	local enemy = npc:GetEnemy()
-
 	if IsValid(enemy) then
 		
 		local enemyDistance = npc:GetPos():Distance(enemy:GetPos())
@@ -798,31 +797,33 @@ function inpcAntlionGuardAI(npc)
 		local currentActivity = npc:GetActivity()
 		local currentSchedule = npc:GetCurrentSchedule()
 		
-		if enemyDistance <= 180 and enemyDistance > 140 and not meleeAttacking and currentSchedule < LAST_SHARED_SCHEDULE then
+		if currentSchedule < LAST_SHARED_SCHEDULE then
+		
+			if enemyDistance <= 180 and enemyDistance > 140 and not meleeAttacking then
 		
 			npc:SetSchedule(SCHED_MELEE_ATTACK1)
 			
-		elseif enemyDistance <= 140 and not rangeAttacking and currentSchedule < LAST_SHARED_SCHEDULE then
+			elseif not rangeAttacking then
 		
 			npc:SetSchedule(SCHED_RANGE_ATTACK1)
 
 		end
 		
+		end
+		
 		if GetConVar("inpc_ai_frenzy"):GetBool() then
 			
-			if not npc.inpcFrenzyBonus then
+			if npc.inpcLastFrenzyEnemy ~= enemy or not npc.inpcFrenzyBonus then
 				npc.inpcFrenzyBonus = 0
 			end
+			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 200 then
+			if enemyDistance <= 180 then
 			
 				if meleeAttacking or rangeAttacking then
 					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + 1
-					
-					
-					
-					npc:SetKeyValue("playbackrate", tostring(1 + (npc.inpcFrenzyBonus / 100)))
+					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval()
+					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 5)))
 					
 				end
 			
@@ -837,16 +838,17 @@ function inpcAntlionGuardAI(npc)
 		
 		if GetConVar("inpc_ai_antlion_guard_chargeacceleration"):GetBool() then
 		
-			if not npc.inpcChargeSpeedBonus then
+			if npc.inpcLastChargeEnemy ~= enemy or not npc.inpcChargeSpeedBonus then
 				npc.inpcChargeSpeedBonus = 0
 			end
+			npc.inpcLastChargeEnemy = enemy
 			
-			local isCharging = npc:GetCurrentSchedule() >= LAST_SHARED_SCHEDULE and npc:GetActivity() >= LAST_SHARED_ACTIVITY
+			local isCharging = currentSchedule >= LAST_SHARED_SCHEDULE and currentActivity >= LAST_SHARED_ACTIVITY
 			
 			if isCharging then
 			
-				npc.inpcChargeSpeedBonus = npc.inpcChargeSpeedBonus + 1
-				npc:SetKeyValue("playbackrate", tostring(1 + (npc.inpcChargeSpeedBonus / 200)))
+				npc.inpcChargeSpeedBonus = npc.inpcChargeSpeedBonus + engine.TickInterval() / 8
+				npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcChargeSpeedBonus, 1, 2)))
 				
 			else
 			
