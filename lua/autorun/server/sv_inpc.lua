@@ -953,7 +953,6 @@ end
 function inpcHunterAI(npc)
 	
 	local enemy = npc:GetEnemy()
-
 	if IsValid(enemy) then
 		
 		local enemyDistance = npc:GetPos():Distance(enemy:GetPos())
@@ -962,7 +961,7 @@ function inpcHunterAI(npc)
 		local currentActivity = npc:GetActivity()
 		
 		if enemyDistance <= 80 and not meleeAttacking and currentSchedule < LAST_SHARED_SCHEDULE then
-		
+
 			npc:SetSchedule(SCHED_MELEE_ATTACK1)
 		
 		end
