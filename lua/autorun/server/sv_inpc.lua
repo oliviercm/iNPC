@@ -1020,6 +1020,16 @@ function inpcVortigauntAI(npc)
 			npc:SetSchedule(SCHED_RANGE_ATTACK1)
 		
 		end
+
+		if rangeAttacking then
+					
+			npc:SetKeyValue("playbackrate", "2")
+			
+		else
+			
+			npc:SetKeyValue("playbackrate", "1")
+		
+		end
 	
 	end
 
@@ -1042,20 +1052,21 @@ function inpcZombieAI(npc)
 		
 		if GetConVar("inpc_ai_frenzy"):GetBool() then
 		
-			if not npc.inpcFrenzyBonus then
+			if npc.inpcLastFrenzyEnemy ~= enemy or not npc.inpcFrenzyBonus then
 				npc.inpcFrenzyBonus = 0
 			end
-		
-			if enemyDistance <= 150 then
+			npc.inpcLastFrenzyEnemy = enemy
+
+			if enemyDistance <= 125 then
 			
 				if meleeAttacking then
 					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + 1
-					npc:SetKeyValue("playbackrate", tostring(1 + (npc.inpcFrenzyBonus / 100)))
+					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 3
+					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
 					
 				end
 			
-			else
+			elseif not meleeAttacking then
 			
 				npc.inpcFrenzyBonus = 0
 				npc:SetKeyValue("playbackrate", "1")
