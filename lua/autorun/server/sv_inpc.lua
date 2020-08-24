@@ -232,7 +232,11 @@ function inpcInitializeNPC(npc, forcedFaction)
 
 		npc:CapabilitiesAdd(CAP_MOVE_SHOOT + CAP_USE + CAP_AUTO_DOORS + CAP_OPEN_DOORS + CAP_TURN_HEAD + CAP_SQUAD + CAP_AIM_GUN)
 
-		npc:SetKeyValue("tacticalvariant", "1")
+		if cl == "npc_combine_s" then
+
+			npc:CapabilitiesRemove(CAP_DUCK)
+
+		end
 	
 	end
 	
