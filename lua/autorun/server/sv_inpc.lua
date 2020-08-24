@@ -803,7 +803,7 @@ function inpcAntlionGuardAI(npc)
 		
 			npc:SetSchedule(SCHED_MELEE_ATTACK1)
 			
-			elseif not rangeAttacking then
+			elseif enemyDistance <= 140 and not rangeAttacking then
 		
 			npc:SetSchedule(SCHED_RANGE_ATTACK1)
 
@@ -818,12 +818,12 @@ function inpcAntlionGuardAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 180 then
+			if enemyDistance <= 200 then
 			
 				if meleeAttacking or rangeAttacking then
 					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval()
-					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 5)))
+					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 4
+					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
 					
 				end
 			
