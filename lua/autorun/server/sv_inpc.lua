@@ -741,7 +741,6 @@ end
 function inpcAntlionAI(npc)
 
 	local enemy = npc:GetEnemy()
-	
 	if IsValid(enemy) then
 	
 		local enemyDistance = npc:GetPos():Distance(enemy:GetPos())
@@ -755,16 +754,17 @@ function inpcAntlionAI(npc)
 		
 		if GetConVar("inpc_ai_frenzy"):GetBool() then
 		
-			if not npc.inpcFrenzyBonus then
+			if npc.inpcLastFrenzyEnemy ~= enemy or not npc.inpcFrenzyBonus then
 				npc.inpcFrenzyBonus = 0
 			end
+			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 150 then
+			if enemyDistance <= 120 then
 			
 				if meleeAttacking then
 					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + 1
-					npc:SetKeyValue("playbackrate", tostring(1 + (npc.inpcFrenzyBonus / 100)))
+					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 3
+					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
 					
 				end
 			
