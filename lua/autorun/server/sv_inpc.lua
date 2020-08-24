@@ -759,7 +759,7 @@ function inpcAntlionAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 120 then
+			if enemyDistance <= 150 then
 			
 				if meleeAttacking then
 					
@@ -768,7 +768,7 @@ function inpcAntlionAI(npc)
 					
 				end
 			
-			else
+			elseif not meleeAttacking then
 			
 				npc.inpcFrenzyBonus = 0
 				npc:SetKeyValue("playbackrate", "1")
@@ -818,7 +818,7 @@ function inpcAntlionGuardAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 200 then
+			if enemyDistance <= 230 then
 			
 				if meleeAttacking or rangeAttacking then
 					
@@ -827,7 +827,7 @@ function inpcAntlionGuardAI(npc)
 					
 				end
 			
-			else
+			elseif not meleeAttacking and not rangeAttacking then
 			
 				npc.inpcFrenzyBonus = 0
 				npc:SetKeyValue("playbackrate", "1")
