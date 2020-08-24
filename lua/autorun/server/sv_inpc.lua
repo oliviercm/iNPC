@@ -796,23 +796,23 @@ function inpcAntlionGuardAI(npc)
 		local chasingEnemy = npc:IsCurrentSchedule(SCHED_CHASE_ENEMY)
 		local currentActivity = npc:GetActivity()
 		local currentSchedule = npc:GetCurrentSchedule()
-		
+
 		if currentSchedule < LAST_SHARED_SCHEDULE then
-		
+
 			if enemyDistance <= 180 and enemyDistance > 140 and not meleeAttacking then
 		
-			npc:SetSchedule(SCHED_MELEE_ATTACK1)
-			
+				npc:SetSchedule(SCHED_MELEE_ATTACK1)
+				
 			elseif enemyDistance <= 140 and not rangeAttacking then
-		
-			npc:SetSchedule(SCHED_RANGE_ATTACK1)
+			
+				npc:SetSchedule(SCHED_RANGE_ATTACK1)
+	
+			end
 
 		end
 		
-		end
-		
 		if GetConVar("inpc_ai_frenzy"):GetBool() then
-			
+
 			if npc.inpcLastFrenzyEnemy ~= enemy or not npc.inpcFrenzyBonus then
 				npc.inpcFrenzyBonus = 0
 			end
