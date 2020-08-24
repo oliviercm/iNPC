@@ -229,6 +229,10 @@ function inpcInitializeNPC(npc, forcedFaction)
 		if proficiency >= 0 and proficiency <= 4 then
 			npc:SetCurrentWeaponProficiency(proficiency)
 		end
+
+		npc:CapabilitiesAdd(CAP_MOVE_SHOOT + CAP_USE + CAP_AUTO_DOORS + CAP_OPEN_DOORS + CAP_TURN_HEAD + CAP_SQUAD + CAP_AIM_GUN)
+
+		npc:SetKeyValue("tacticalvariant", "1")
 	
 	end
 	
@@ -680,7 +684,7 @@ function inpcInfantryAI(npc)
 		return
 	end
 
-	local deployingManhack = npc:GetClass("npc_metropolice") and currentSchedule >= LAST_SHARED_SCHEDULE and currentActivity >= LAST_SHARED_ACTIVITY
+	local deployingManhack = npc:GetClass() == "npc_metropolice" and currentSchedule >= LAST_SHARED_SCHEDULE and currentActivity >= LAST_SHARED_ACTIVITY
 	if deployingManhack then
 		inpcAllyNearbyManhack(npc)
 		return
@@ -712,14 +716,14 @@ function inpcInfantryAI(npc)
 
 				end
 
-			else
+			elseif currentSchedule < LAST_SHARED_SCHEDULE then
 
 				npc:SetSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
 				return
 
 			end
 
-		else
+		elseif currentSchedule < LAST_SHARED_SCHEDULE then
 
 			npc:SetSchedule(SCHED_ESTABLISH_LINE_OF_FIRE)
 			return
