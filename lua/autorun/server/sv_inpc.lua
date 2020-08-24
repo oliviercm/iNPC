@@ -920,30 +920,30 @@ function inpcFastZombieAI(npc)
 	end
 
 	local enemy = npc:GetEnemy()
-	
 	if IsValid(enemy) then
 		
 		local enemyDistance = npc:GetPos():Distance(enemy:GetPos())
-		local meleeAttacking = npc:GetActivity() == ACT_MELEE_ATTACK1
 		local currentSchedule = npc:GetCurrentSchedule()
 		local currentActivity = npc:GetActivity()
-		local floatingOffGround = npc:HasCondition(INPC_COND_FLOATING_OFF_GROUND)
+		local isOnGround = npc:IsOnGround()
 		local seeEnemy = npc:HasCondition(INPC_COND_SEE_ENEMY)
+
+		if currentSchedule >= LAST_SHARED_SCHEDULE and currentActivity >= LAST_SHARED_ACTIVITY then
+
+			if enemyDistance <= 90 then
 		
-		if enemyDistance <= 90 and currentActivity >= LAST_SHARED_ACTIVITY and currentSchedule >= LAST_SHARED_SCHEDULE and not floatingOffGround then
-		
-			npc:SetSchedule(SCHED_MELEE_ATTACK1)
+				npc:SetSchedule(SCHED_MELEE_ATTACK1)
 			
-		elseif currentActivity >= LAST_SHARED_ACTIVITY and currentSchedule >= LAST_SHARED_SCHEDULE and not floatingOffGround and seeEnemy then
-		
+			elseif enemyDistance < 256 and seeEnemy and isOnGround then
+
+				npc:SetSchedule(SCHED_RANGE_ATTACK1)
+
+			end
+
+		elseif enemyDistance < 256 and seeEnemy and isOnGround then
+
 			npc:SetSchedule(SCHED_RANGE_ATTACK1)
-		
-		end
-		
-		if currentActivity == ACT_RUN and seeEnemy and enemyDistance > 90 and enemyDistance < 500 then
-		
-			npc:SetSchedule(SCHED_RANGE_ATTACK1)
-		
+
 		end
 
 	end
