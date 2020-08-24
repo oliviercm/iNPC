@@ -759,18 +759,14 @@ function inpcAntlionAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 100 then
+			if meleeAttacking then
 			
-				if meleeAttacking then
-					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 3
-					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
-					
-				end
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus + engine.TickInterval() / 3, 0, 2)
+				npc:SetKeyValue("playbackrate", tostring(1 + npc.inpcFrenzyBonus))
 			
-			elseif not meleeAttacking then
+			else
 			
-				npc.inpcFrenzyBonus = 0
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus - engine.TickInterval(), 0, 2)
 				npc:SetKeyValue("playbackrate", "1")
 			
 			end
@@ -818,18 +814,14 @@ function inpcAntlionGuardAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 180 then
+			if meleeAttacking or rangeAttacking then
 			
-				if meleeAttacking or rangeAttacking then
-					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 4
-					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
-					
-				end
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus + engine.TickInterval() / 3, 0, 2)
+				npc:SetKeyValue("playbackrate", tostring(1 + npc.inpcFrenzyBonus))
 			
-			elseif not meleeAttacking and not rangeAttacking then
+			else
 			
-				npc.inpcFrenzyBonus = 0
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus - engine.TickInterval(), 0, 2)
 				npc:SetKeyValue("playbackrate", "1")
 			
 			end
@@ -847,8 +839,8 @@ function inpcAntlionGuardAI(npc)
 			
 			if isCharging then
 			
-				npc.inpcChargeSpeedBonus = npc.inpcChargeSpeedBonus + engine.TickInterval() / 8
-				npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcChargeSpeedBonus, 1, 2)))
+				npc.inpcChargeSpeedBonus = math.Clamp(npc.inpcChargeSpeedBonus + engine.TickInterval() / 4, 0, 1)
+				npc:SetKeyValue("playbackrate", tostring(1 + npc.inpcChargeSpeedBonus))
 				
 			else
 			
@@ -891,18 +883,14 @@ function inpcAntlionWorkerAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 
-			if enemyDistance <= 100 then
+			if meleeAttacking then
 			
-				if meleeAttacking then
-					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 3
-					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
-					
-				end
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus + engine.TickInterval() / 3, 0, 2)
+				npc:SetKeyValue("playbackrate", tostring(1 + npc.inpcFrenzyBonus))
 			
-			elseif not meleeAttacking then
+			else
 			
-				npc.inpcFrenzyBonus = 0
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus - engine.TickInterval(), 0, 2)
 				npc:SetKeyValue("playbackrate", "1")
 			
 			end
@@ -1057,18 +1045,14 @@ function inpcZombieAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 
-			if enemyDistance <= 75 then
+			if meleeAttacking then
 			
-				if meleeAttacking then
-					
-					npc.inpcFrenzyBonus = npc.inpcFrenzyBonus + engine.TickInterval() / 3
-					npc:SetKeyValue("playbackrate", tostring(math.Clamp(1 + npc.inpcFrenzyBonus, 1, 3)))
-					
-				end
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus + engine.TickInterval() / 3, 0, 2)
+				npc:SetKeyValue("playbackrate", tostring(1 + npc.inpcFrenzyBonus))
 			
-			elseif not meleeAttacking then
+			else
 			
-				npc.inpcFrenzyBonus = 0
+				npc.inpcFrenzyBonus = math.Clamp(npc.inpcFrenzyBonus - engine.TickInterval(), 0, 2)
 				npc:SetKeyValue("playbackrate", "1")
 			
 			end
