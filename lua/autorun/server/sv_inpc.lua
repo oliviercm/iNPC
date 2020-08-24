@@ -759,7 +759,7 @@ function inpcAntlionAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 150 then
+			if enemyDistance <= 100 then
 			
 				if meleeAttacking then
 					
@@ -818,7 +818,7 @@ function inpcAntlionGuardAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 		
-			if enemyDistance <= 230 then
+			if enemyDistance <= 180 then
 			
 				if meleeAttacking or rangeAttacking then
 					
@@ -891,7 +891,7 @@ function inpcAntlionWorkerAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 
-			if enemyDistance <= 150 then
+			if enemyDistance <= 100 then
 			
 				if meleeAttacking then
 					
@@ -1057,7 +1057,7 @@ function inpcZombieAI(npc)
 			end
 			npc.inpcLastFrenzyEnemy = enemy
 
-			if enemyDistance <= 125 then
+			if enemyDistance <= 75 then
 			
 				if meleeAttacking then
 					
