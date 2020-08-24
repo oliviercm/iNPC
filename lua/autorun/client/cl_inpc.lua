@@ -103,5 +103,8 @@ net.Receive("iNPCPlayerChangedFaction", function()
 		Color(255, 255, 255),
 		"\"."
 	)
-	notification.AddLegacy("[iNPC] Your faction is now \""..newFaction.."\".", NOTIFY_GENERIC, 10)
+	timer.Simple(0, function()
+		notification.AddLegacy("[iNPC] Your faction is now \""..newFaction.."\".", NOTIFY_GENERIC, 10)
+		surface.PlaySound("ambient/levels/canals/drip"..math.random(1, 4)..".wav")
+	end)
 end)
