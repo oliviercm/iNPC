@@ -657,7 +657,25 @@ function inpcInfantryAI(npc)
 	local enemy = npc:GetEnemy()
 
 	if not IsValid(enemy) then
+		
+		if npc:GetNPCState() == NPC_STATE_IDLE then
+
+			local weapon = npc:GetActiveWeapon()
+			if IsValid(weapon) and weapon:Clip1() < weapon:GetMaxClip1() then
+
+				local currentSchedule = npc:GetCurrentSchedule()
+				if not (currentSchedule == SCHED_RELOAD or currentSchedule == SCHED_HIDE_AND_RELOAD or npc:GetActivity() == ACT_RELOAD) then
+
+					npc:SetSchedule(SCHED_RELOAD)
+
+				end
+
+			end
+
+		end
+
 		return
+
 	end
 
 	local currentSchedule = npc:GetCurrentSchedule()
