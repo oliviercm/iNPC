@@ -796,7 +796,7 @@ function inpcInfantryAI(npc)
 		
 			elseif distanceFromEnemy < INPC_ENEMY_TOO_FAR_DISTANCE then
 
-				if math.random() < 0.004 then
+				if math.random() < 0.01 then
 
 					npc:SetSchedule(SCHED_RUN_RANDOM)
 					return
