@@ -65,7 +65,7 @@ local function populateInpcAIOptionsToolPanel(dform)
 	dform:CheckBox("Enable No Friendly Fire", "inpc_nofriendlyfire")
 	dform:CheckBox("Enable Unlimited Vision", "inpc_unlimited_vision")
 	dform:CheckBox("Enable Idle Patrolling", "inpc_patrol")
-	dform:CheckBox("Enable AI Attack Frenzy", "inpc_ai_frenzy")
+	dform:CheckBox("Enable Increase Successive Melee Attack Speed", "inpc_ai_frenzy")
 
 	dform:Help("Enable and disable specific AI overrides.")
 	dform:CheckBox("Enable Custom Infantry AI", "inpc_ai_infantry")
