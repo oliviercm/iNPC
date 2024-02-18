@@ -1,7 +1,7 @@
 local function populateInpcAdminToolPanel(dform)
-	
+
 	dform:CheckBox("Enabled", "inpc_enabled")
-	
+
 	dform:Help("NPC Proficiency: How accurate should NPCs be?")
 	local cbox = dform:ComboBox("NPC Proficiency", "inpc_weaponproficiency")
 	cbox:AddChoice("Default", -1)
@@ -13,7 +13,7 @@ local function populateInpcAdminToolPanel(dform)
 
 	dform:Help("Enable Factions: Enable/disable all NPC factions features.")
 	dform:CheckBox("Enable Factions", "inpc_enable_factions")
-	
+
 	dform:Help("Custom Playermodel Faction: What faction should custom playermodels be?")
 	dform:ControlHelp("Outsider: All NPCs are hostile.")
 	dform:ControlHelp("Neutral: All NPCs are neutral/friendly.")
@@ -24,7 +24,7 @@ local function populateInpcAdminToolPanel(dform)
 	cbox:AddChoice("Antlions", "antlions")
 	cbox:AddChoice("Outsider", "outsider")
 	cbox:AddChoice("Neutral", "neutral")
-	
+
 	dform:Help("Force Player Faction: If not default, forces ALL players to be this faction.")
 	dform:ControlHelp("Default: Faction depends on playermodel.")
 	dform:ControlHelp("Outsider: All NPCs are hostile.")
@@ -37,26 +37,26 @@ local function populateInpcAdminToolPanel(dform)
 	cbox:AddChoice("Antlions", "antlions")
 	cbox:AddChoice("Outsider", "outsider")
 	cbox:AddChoice("Neutral", "neutral")
-	
+
 	dform:CheckBox("Enable Ragdoll & Decal Cleanup", "inpc_cleanup")
 	dform:CheckBox("Enable Custom NPC Health Values", "inpc_custom_health")
 	dform:CheckBox("Enable NPC Health Regeneration", "inpc_health_regeneration")
 	dform:CheckBox("Enable Floor Turret/Ceiling Turret/Strider Damageable", "inpc_damage_invulnerable")
 	dform:CheckBox("Enable Adding NPCs to Squad", "inpc_allow_adding_npcs_to_squad")
-	
+
 end
 
 local function populateInpcClientToolPanel(dform)
-	
+
 	dform:Help("Force NPC Faction: What faction should NPCs you spawn be?")
-	
+
 	local cbox = dform:ComboBox("Force NPC Faction", "inpc_forcefaction")
 	cbox:AddChoice("Default", "default")
 	cbox:AddChoice("Resistance", "resistance")
 	cbox:AddChoice("Overwatch", "overwatch")
 	cbox:AddChoice("Zombies", "zombies")
 	cbox:AddChoice("Antlions", "antlions")
-	
+
 end
 
 local function populateInpcAIOptionsToolPanel(dform)
@@ -79,7 +79,7 @@ local function populateInpcAIOptionsToolPanel(dform)
 	dform:CheckBox("Enable Antlion Guards Charge Acceleration", "inpc_ai_antlion_guard_chargeacceleration")
 	dform:CheckBox("Enable Custom Hunter AI", "inpc_ai_hunter")
 	dform:CheckBox("Enable Custom Vortigaunt AI", "inpc_ai_vortigaunt")
-	
+
 end
 
 hook.Add("PopulateToolMenu", "iNPC Options", function()
@@ -87,7 +87,7 @@ hook.Add("PopulateToolMenu", "iNPC Options", function()
     spawnmenu.AddToolMenuOption("Options", "iNPC", "iNPCAdminToolMenu", "Admin", "", "", populateInpcAdminToolPanel)
 	spawnmenu.AddToolMenuOption("Options", "iNPC", "iNPCClientToolMenu", "Client", "", "", populateInpcClientToolPanel)
 	spawnmenu.AddToolMenuOption("Options", "iNPC", "iNPCAIOptionsToolMenu", "AI Overrides", "", "", populateInpcAIOptionsToolPanel)
-	
+
 end)
 
 net.Receive("iNPCPlayerChangedFaction", function()
