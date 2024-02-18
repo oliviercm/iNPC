@@ -610,6 +610,20 @@ end
 
 hook.Add("EntityTakeDamage", "iNPCFriendlyfireHook", inpcFriendlyFire)
 
+function inpcDamageReact(victim, dmg)
+
+	if not GetConVar("inpc_enabled"):GetBool() then
+		return
+	end
+
+	if IsValid(victim) and victim.inpcNextStrafe then
+		victim.inpcNextStrafe = victim.inpcNextStrafe - (victim.inpcNextStrafe * dmg:GetDamage() * dmg:GetDamage() / victim:GetMaxHealth())
+	end
+
+end
+
+hook.Add("EntityTakeDamage", "iNPCDamageReactHook", inpcDamageReact)
+
 function inpcCleanup()
 
 	if not GetConVar("inpc_enabled"):GetBool() then
@@ -739,12 +753,8 @@ function inpcInfantryAI(npc)
 	local currentSchedule = npc:GetCurrentSchedule()
 
 	local strafing = currentSchedule == SCHED_RUN_RANDOM
-	if strafing then
-		return
-	end
-
 	local getLineOfFire = currentSchedule == SCHED_ESTABLISH_LINE_OF_FIRE
-	if getLineOfFire then
+	if strafing or getLineOfFire then
 		return
 	end
 
@@ -789,9 +799,16 @@ function inpcInfantryAI(npc)
 
 			elseif distanceFromEnemy < INPC_ENEMY_TOO_FAR_DISTANCE then
 
-				if math.random() < 0.01 then
+				if not npc.inpcNextStrafe then
+
+					npc.inpcNextStrafe = CurTime() + math.Rand(1, 8)
+
+				end
+
+				if CurTime() >= npc.inpcNextStrafe then
 
 					npc:SetSchedule(SCHED_RUN_RANDOM)
+					npc.inpcNextStrafe = nil
 					return
 
 				end
