@@ -1,4 +1,5 @@
 CreateConVar("inpc_enabled", 1, FCVAR_NOTIFY + FCVAR_ARCHIVE)
+CreateConVar("inpc_debug", 0, FCVAR_ARCHIVE + FCVAR_CHEAT)
 
 CreateConVar("inpc_cleanup", 0, FCVAR_NOTIFY + FCVAR_ARCHIVE)
 

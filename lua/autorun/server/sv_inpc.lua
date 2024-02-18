@@ -98,7 +98,9 @@ function inpcAI(npc)
 
 	if IsValid(npc) then
 
-		debugoverlay.Text(npc:GetPos(), npc:GetClass(), 0.03)
+		if GetConVar("inpc_debug"):GetBool() then
+			debugoverlay.Text(npc:GetPos(), (INPC_SCHEDULES[npc:GetCurrentSchedule() + 1] or "UNKNOWN") .. " | " .. (INPC_ACTS[npc:GetActivity() + 2] or "UNKNOWN"), 0.03)
+		end
 
 		state = npc:GetNPCState()
 
@@ -114,7 +116,9 @@ function inpcAI(npc)
 		local enemy = npc:GetEnemy()
 		if IsValid(enemy) then
 
-			debugoverlay.Line(npc:LookupBone("ValveBiped.Bip01_Head1") and npc:GetBonePosition(npc:LookupBone("ValveBiped.Bip01_Head1")) or npc:HeadTarget(), enemy:BodyTarget(npc:GetPos()), 0.03, Color(255, 0, 0))
+			if GetConVar("inpc_debug"):GetBool() then
+				debugoverlay.Line(npc:LookupBone("ValveBiped.Bip01_Head1") and npc:GetBonePosition(npc:LookupBone("ValveBiped.Bip01_Head1")) or npc:HeadTarget(), enemy:BodyTarget(npc:GetPos()), 0.03, npc.inpcFaction == "resistance" and Color(0, 255, 0) or Color(255, 0, 0))
+			end
 
 			if npc.inpcLastEnemy ~= enemy then
 
