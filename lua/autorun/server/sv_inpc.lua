@@ -102,8 +102,7 @@ function inpcAI(npc)
 
 		state = npc:GetNPCState()
 
-		local dead = state == NPC_STATE_DEAD or npc:Health() <= 0
-		if dead then
+		if state == NPC_STATE_DEAD or npc:Health() <= 0 then
 			return
 		end
 
@@ -130,9 +129,7 @@ function inpcAI(npc)
 
 			end
 
-			local isIdle = state == NPC_STATE_IDLE and npc:IsCurrentSchedule(SCHED_IDLE_STAND)
-
-			if GetConVar("inpc_patrol"):GetBool() and isIdle and not npc.inpcIsDeployedManhack then
+			if GetConVar("inpc_patrol"):GetBool() and state == NPC_STATE_IDLE and npc:IsCurrentSchedule(SCHED_IDLE_STAND) and not npc.inpcIsDeployedManhack then
 
 				if math.random() < 0.8 then
 					npc:SetSchedule(SCHED_PATROL_WALK)
@@ -144,9 +141,7 @@ function inpcAI(npc)
 
 			end
 
-			local alertState = state == NPC_STATE_ALERT
-
-			if alertState then
+			if state == NPC_STATE_ALERT then
 
 				npc:SetNPCState(NPC_STATE_IDLE)
 				return
