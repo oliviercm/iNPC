@@ -58,34 +58,32 @@ function inpcThink()
 
 				end
 
-				if v.inpcStopAIUntil and CurTime() < v.inpcStopAIUntil then
+				if not (v.inpcStopAIUntil and CurTime() < v.inpcStopAIUntil) then
 
-					return
+					local cl = v:GetClass()
+
+					if v.inpcIsInfantry and GetConVar("inpc_ai_infantry"):GetBool()then
+						inpcInfantryAI(v)
+					elseif (cl == "npc_zombie" or cl == "npc_poisonzombie" or cl == "npc_zombine") and GetConVar("inpc_ai_zombie"):GetBool() then
+						inpcZombieAI(v)
+					elseif cl == "npc_fastzombie" and GetConVar("inpc_ai_fastzombie"):GetBool() then
+						inpcFastZombieAI(v)
+					elseif cl == "npc_hunter" and GetConVar("inpc_ai_hunter"):GetBool() then
+						inpcHunterAI(v)
+					elseif cl == "npc_antlion" and GetConVar("inpc_ai_antlion"):GetBool() then
+						inpcAntlionAI(v)
+					elseif cl == "npc_antlion_worker" and GetConVar("inpc_ai_antlion_worker"):GetBool() then
+						inpcAntlionWorkerAI(v)
+					elseif cl == "npc_antlionguard" and GetConVar("inpc_ai_antlion_guard"):GetBool() then
+						inpcAntlionGuardAI(v)
+					elseif cl == "npc_vortigaunt" and GetConVar("inpc_ai_vortigaunt"):GetBool() then
+						inpcVortigauntAI(v)
+					elseif cl == "npc_manhack" then
+						inpcManhackAI(v)
+					end
 
 				end
 
-			end
-
-			local cl = v:GetClass()
-
-			if v.inpcIsInfantry and GetConVar("inpc_ai_infantry"):GetBool()then
-				inpcInfantryAI(v)
-			elseif (cl == "npc_zombie" or cl == "npc_poisonzombie" or cl == "npc_zombine") and GetConVar("inpc_ai_zombie"):GetBool() then
-				inpcZombieAI(v)
-			elseif cl == "npc_fastzombie" and GetConVar("inpc_ai_fastzombie"):GetBool() then
-				inpcFastZombieAI(v)
-			elseif cl == "npc_hunter" and GetConVar("inpc_ai_hunter"):GetBool() then
-				inpcHunterAI(v)
-			elseif cl == "npc_antlion" and GetConVar("inpc_ai_antlion"):GetBool() then
-				inpcAntlionAI(v)
-			elseif cl == "npc_antlion_worker" and GetConVar("inpc_ai_antlion_worker"):GetBool() then
-				inpcAntlionWorkerAI(v)
-			elseif cl == "npc_antlionguard" and GetConVar("inpc_ai_antlion_guard"):GetBool() then
-				inpcAntlionGuardAI(v)
-			elseif cl == "npc_vortigaunt" and GetConVar("inpc_ai_vortigaunt"):GetBool() then
-				inpcVortigauntAI(v)
-			elseif cl == "npc_manhack" then
-				inpcManhackAI(v)
 			end
 
 		end
@@ -100,6 +98,8 @@ function inpcAI(npc)
 
 	if IsValid(npc) then
 
+		debugoverlay.Text(npc:GetPos(), npc:GetClass(), 0.03)
+
 		state = npc:GetNPCState()
 
 		if state == NPC_STATE_DEAD or npc:Health() <= 0 then
@@ -113,6 +113,8 @@ function inpcAI(npc)
 
 		local enemy = npc:GetEnemy()
 		if IsValid(enemy) then
+
+			debugoverlay.Line(npc:LookupBone("ValveBiped.Bip01_Head1") and npc:GetBonePosition(npc:LookupBone("ValveBiped.Bip01_Head1")) or npc:HeadTarget(), enemy:BodyTarget(npc:GetPos()), 0.03, Color(255, 0, 0))
 
 			if npc.inpcLastEnemy ~= enemy then
 
