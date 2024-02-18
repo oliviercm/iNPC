@@ -130,9 +130,7 @@ function inpcAI(npc)
 
 			end
 
-			local idleState = state == NPC_STATE_IDLE
-			local idleSchedule = npc:IsCurrentSchedule(SCHED_IDLE_STAND)
-			local isIdle = idleState and idleSchedule
+			local isIdle = state == NPC_STATE_IDLE and npc:IsCurrentSchedule(SCHED_IDLE_STAND)
 
 			if GetConVar("inpc_patrol"):GetBool() and isIdle and not npc.inpcIsDeployedManhack then
 
