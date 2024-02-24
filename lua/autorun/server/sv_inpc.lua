@@ -117,7 +117,7 @@ function inpcAI(npc)
 		if IsValid(enemy) then
 
 			if GetConVar("inpc_debug"):GetBool() then
-				debugoverlay.Line(npc:LookupBone("ValveBiped.Bip01_Head1") and npc:GetBonePosition(npc:LookupBone("ValveBiped.Bip01_Head1")) or npc:HeadTarget(), enemy:BodyTarget(npc:GetPos()), 0.03, npc.inpcFaction == "resistance" and Color(0, 255, 0) or Color(255, 0, 0))
+				debugoverlay.Line(npc:LookupBone("ValveBiped.Bip01_Head1") and npc:GetBonePosition(npc:LookupBone("ValveBiped.Bip01_Head1")) or npc:HeadTarget(npc:GetPos()) or npc:BodyTarget(npc:GetPos()) or npc:WorldSpaceCenter() or npc:GetPos(), enemy:BodyTarget(npc:GetPos()), 0.03, npc.inpcFaction == "resistance" and Color(0, 255, 0) or Color(255, 0, 0))
 			end
 
 			if npc.inpcLastEnemy ~= enemy then
