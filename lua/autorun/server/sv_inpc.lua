@@ -807,7 +807,7 @@ function inpcInfantryAI(npc)
 
 				if not npc.inpcNextStrafe then
 
-					npc.inpcNextStrafe = CurTime() + math.Rand(1, 8)
+					npc.inpcNextStrafe = CurTime() + math.Rand(1, 5)
 
 				end
 
